@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الصفحة الرئيسية</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="welcome-card">
+    <h1 id="welcomeText">مرحباً بك!</h1>
+    <p>تم تسجيل الدخول بنجاح.</p>
+    <button onclick="showUsers()">عرض المستخدمين</button>
+    <button onclick="logout()" class="btn-secondary">تسجيل الخروج</button>
+
+    <div class="change-password-section">
+      <h3>تغيير كلمة المرور</h3>
+      <input type="password" id="currentPassword" placeholder="كلمة المرور الحالية" />
+      <input type="password" id="newPassword" placeholder="كلمة المرور الجديدة" />
+      <button onclick="changePassword()">حفظ كلمة المرور الجديدة</button>
+      <p id="passwordMessage" class="message"></p>
+    </div>
+
+    <div id="usersSection" class="users-section" style="display: none;">
+      <h3>المستخدمون</h3>
+      <div id="usersList" class="users-list"></div>
+    </div>
+  </div>
+
+  <script>
+    const user = sessionStorage.getItem('loggedInUser');
+    if (!user) {
+      window.location.href = 'index.html';
+    } else {
+      document.getElementById('welcomeText').innerText = `مرحباً بك، ${user}!`;
+    }
+
+    async function showUsers() {
+      const usersSection = document.getElementById('usersSection');
+      const usersList = document.getElementById('usersList');
+
+      usersSection.style.display = 'block';
+      usersList.innerHTML = '<p>جاري تحميل المستخدمين...</p>';
+
+      try {
+        const response = await fetch('/api/users');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && Array.isArray(data.users) && data.users.length > 0) {
+            usersList.innerHTML = data.users.map(user => `<div class="user-item">${user.username}</div>`).join('');
+            return;
+          }
+        }
+      } catch (err) {
+        // تجاهل فقدان الاتصال بالخادم وسنستخدم التخزين المحلي
+      }
+
+      const storedUsers = JSON.parse(localStorage.getItem('appUsers') || '[]');
+      if (storedUsers.length === 0) {
+        usersList.innerHTML = '<p>لا يوجد مستخدمين مسجلين.</p>';
+        return;
+      }
+
+      usersList.innerHTML = storedUsers.map(user => `<div class="user-item">${user.username}</div>`).join('');
+    }
+
+    async function changePassword() {
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const messageBox = document.getElementById('passwordMessage');
+
+      if (!currentPassword || !newPassword) {
+        messageBox.innerText = 'يرجى إدخال كلمتي المرور';
+        messageBox.style.color = 'red';
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/change-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: user,
+            currentPassword,
+            newPassword
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          messageBox.innerText = data.message || 'تم تغيير كلمة المرور بنجاح';
+          messageBox.style.color = 'green';
+          document.getElementById('currentPassword').value = '';
+          document.getElementById('newPassword').value = '';
+        } else {
+          messageBox.innerText = data.message || 'حدث خطأ أثناء تغيير كلمة المرور';
+          messageBox.style.color = 'red';
+        }
+      } catch (err) {
+        messageBox.innerText = 'تعذر الاتصال بالخادم';
+        messageBox.style.color = 'red';
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('loggedInUser');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
