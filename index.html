@@ -1,48 +1,123 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تسجيل الدخول</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ALS Media | المنصة الإعلامية والتقنية</title>
+  <meta name="description" content="منصة ALS Media للإعلام والتكنولوجيا، تشمل القنوات، التطبيقات، المواقع الإلكترونية، والتجارب التفاعلية." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="login-card">
-    <h2>تسجيل الدخول</h2>
-    <form id="loginForm">
-      <div class="input-group">
-        <label for="username">اسم المستخدم:</label>
-        <input type="text" id="username" required>
-      </div>
-      <div class="input-group">
-        <label for="password">كلمة السر:</label>
-        <input type="password" id="password" required>
-      </div>
-      <button type="submit">دخول</button>
-      <button type="button" class="btn-secondary" id="openRegisterModal">إنشاء حساب جديد</button>
-      <p id="errorMessage" class="error"></p>
-    </form>
-  </div>
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">ALS</span>
+      <span>Media</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="active">الرئيسية</a>
+      <a href="portfolio.html">المشاريع</a>
+      <a href="demos.html">التجارب</a>
+      <a href="about.html">من نحن</a>
+      <a href="contact.html">تواصل معنا</a>
+    </nav>
+    <a class="btn btn-primary" href="contact.html">تواصل معنا</a>
+  </header>
 
-  <!-- نافذة إنشاء حساب جديد (Modal) -->
-  <div id="registerModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" id="closeRegisterModal">&times;</span>
-      <h2>حساب جديد</h2>
-      <form id="registerForm">
-        <div class="input-group">
-          <label for="regUsername">اسم المستخدم:</label>
-          <input type="text" id="regUsername" required>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">علامة رقمية متكاملة</p>
+        <h1>نصنع المحتوى الذي يلهم الملايين، ونطور التطبيقات التي تثري حياتك.</h1>
+        <p class="hero-text">منصة ALS Media تجمع بين الإعلام، البرمجيات، القنوات، والتجارب التفاعلية في بيئة واحدة تجمع الجودة والابتكار.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="portfolio.html">استكشف 31 مشروعًا</a>
+          <a class="btn btn-secondary" href="contact.html">فرص الرعاية والأعمال</a>
         </div>
-        <div class="input-group">
-          <label for="regPassword">كلمة السر:</label>
-          <input type="password" id="regPassword" required>
+        <div class="hero-badges">
+          <span>+200 مليون مشاهدة</span>
+          <span>+1 مليون مستخدم</span>
+          <span>12 قناة</span>
         </div>
-        <button type="submit">حفظ وتجميع</button>
-        <p id="regMessage" class="msg"></p>
-      </form>
+      </div>
+      <div class="hero-card">
+        <h3>ماذا نقدّم؟</h3>
+        <ul>
+          <li>قنوات يوتيوب عربية وأجنبية حصرية</li>
+          <li>تطبيقات مخصصة للهواتف والمواقع</li>
+          <li>أدوات ومحتوى تفاعلي جاهز للعرض</li>
+          <li>شراكات إعلانية واحترافية</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="stats-bar">
+      <div class="stat-item">
+        <strong>+200M</strong>
+        <span>مشاهدة يوتيوب</span>
+      </div>
+      <div class="stat-item">
+        <strong>+1M</strong>
+        <span>مستخدم ومزور</span>
+      </div>
+      <div class="stat-item">
+        <strong>31</strong>
+        <span>مشروعًا رقمياً</span>
+      </div>
+      <div class="stat-item">
+        <strong>4.8/5</strong>
+        <span>متوسط التقييم</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">المشاريع والأصول</p>
+          <h2>معرض شامل لأبرز أصول ALS Media</h2>
+        </div>
+        <a class="text-link" href="portfolio.html">عرض الكل</a>
+      </div>
+      <div id="portfolioGrid" class="portfolio-grid"></div>
+    </section>
+
+    <section class="section demo-banner">
+      <div>
+        <p class="eyebrow">التجارب التفاعلية</p>
+        <h2>اختبر الأدوات والأنشطة مباشرة داخل المنصة</h2>
+      </div>
+      <a class="btn btn-primary" href="demos.html">فتح مركز التجارب</a>
+    </section>
+
+    <section class="section about-home">
+      <div class="card">
+        <p class="eyebrow">من نحن</p>
+        <h3>رسالة ALS Media</h3>
+        <p>نؤمن بأن الإعلام والبرمجيات يمكن أن يكونا أدوات قوية لتغيير السلوك وتقديم القيمة اليومية للمستخدمين.</p>
+      </div>
+      <div class="card">
+        <p class="eyebrow">القيم</p>
+        <h3>الابتكار والجودة والوضوح</h3>
+        <p>نسعى إلى بناء محتوى يثري المعرفة، وتطبيقات ترفع الإنتاجية، ومشاريع تُلامس حياة الناس بطريقة إيجابية.</p>
+      </div>
+      <div class="card">
+        <p class="eyebrow">الرؤية</p>
+        <h3>رائدة في الشرق الأوسط والعالم</h3>
+        <p>نطمح لأن نصير منبرا إعلاميًا وتقنيًا يربط بين الثقافة، التكنولوجيا، والابتكار في خدمة الجمهور.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 ALS Media. جميع الحقوق محفوظة.</p>
+    <div>
+      <a href="portfolio.html">المشاريع</a>
+      <a href="about.html">من نحن</a>
+      <a href="contact.html">التواصل</a>
     </div>
-  </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>

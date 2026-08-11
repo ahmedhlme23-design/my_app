@@ -1,114 +1,60 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>الصفحة الرئيسية</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ALS Media | الصفحة الرئيسية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="welcome-card">
-    <h1 id="welcomeText">مرحباً بك!</h1>
-    <p>تم تسجيل الدخول بنجاح.</p>
-    <button onclick="showUsers()">عرض المستخدمين</button>
-    <button onclick="window.location.href='question-generator.html'">توليد الأسئلة</button>
-    <button onclick="logout()" class="btn-secondary">تسجيل الخروج</button>
+  <header class="topbar">
+    <a class="brand" href="home.html">
+      <span class="brand-mark">ALS</span>
+      <span>Media</span>
+    </a>
+    <nav class="nav-links">
+      <a href="home.html" class="active">الرئيسية</a>
+      <a href="portfolio.html">المشاريع</a>
+      <a href="demos.html">التجارب</a>
+      <a href="about.html">من نحن</a>
+      <a href="contact.html">تواصل معنا</a>
+    </nav>
+    <a class="btn btn-primary" href="contact.html">تواصل معنا</a>
+  </header>
 
-    <div class="change-password-section">
-      <h3>تغيير كلمة المرور</h3>
-      <input type="password" id="currentPassword" placeholder="كلمة المرور الحالية" />
-      <input type="password" id="newPassword" placeholder="كلمة المرور الجديدة" />
-      <button onclick="changePassword()">حفظ كلمة المرور الجديدة</button>
-      <p id="passwordMessage" class="message"></p>
-    </div>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">علامة رقمية متكاملة</p>
+        <h1>نصنع المحتوى الذي يلهم الملايين، ونطور التطبيقات التي تثري حياتك.</h1>
+        <p class="hero-text">منصة ALS Media تجمع بين الإعلام، البرمجيات، القنوات، والتجارب التفاعلية في بيئة واحدة تجمع الجودة والابتكار.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="portfolio.html">استكشف 31 مشروعًا</a>
+          <a class="btn btn-secondary" href="contact.html">فرص الرعاية والأعمال</a>
+        </div>
+        <div class="hero-badges">
+          <span>+200 مليون مشاهدة</span>
+          <span>+1 مليون مستخدم</span>
+          <span>12 قناة</span>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3>ماذا نقدّم؟</h3>
+        <ul>
+          <li>قنوات يوتيوب عربية وأجنبية حصرية</li>
+          <li>تطبيقات مخصصة للهواتف والمواقع</li>
+          <li>أدوات ومحتوى تفاعلي جاهز للعرض</li>
+          <li>شراكات إعلانية واحترافية</li>
+        </ul>
+      </div>
+    </section>
+  </main>
 
-    <div id="usersSection" class="users-section" style="display: none;">
-      <h3>المستخدمون</h3>
-      <div id="usersList" class="users-list"></div>
-    </div>
-
-  </div>
-
-  <script>
-    const user = sessionStorage.getItem('loggedInUser');
-    if (!user) {
-      window.location.href = 'index.html';
-    } else {
-      document.getElementById('welcomeText').innerText = `مرحباً بك، ${user}!`;
-    }
-
-    async function showUsers() {
-      const usersSection = document.getElementById('usersSection');
-      const usersList = document.getElementById('usersList');
-
-      usersSection.style.display = 'block';
-      usersList.innerHTML = '<p>جاري تحميل المستخدمين...</p>';
-
-      try {
-        const response = await fetch('/api/users');
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success && Array.isArray(data.users) && data.users.length > 0) {
-            usersList.innerHTML = data.users.map(user => `<div class="user-item">${user.username}</div>`).join('');
-            return;
-          }
-        }
-      } catch (err) {
-        // تجاهل فقدان الاتصال بالخادم وسنستخدم التخزين المحلي
-      }
-
-      const storedUsers = JSON.parse(localStorage.getItem('appUsers') || '[]');
-      if (storedUsers.length === 0) {
-        usersList.innerHTML = '<p>لا يوجد مستخدمين مسجلين.</p>';
-        return;
-      }
-
-      usersList.innerHTML = storedUsers.map(user => `<div class="user-item">${user.username}</div>`).join('');
-    }
-
-    async function changePassword() {
-      const currentPassword = document.getElementById('currentPassword').value;
-      const newPassword = document.getElementById('newPassword').value;
-      const messageBox = document.getElementById('passwordMessage');
-
-      if (!currentPassword || !newPassword) {
-        messageBox.innerText = 'يرجى إدخال كلمتي المرور';
-        messageBox.style.color = 'red';
-        return;
-      }
-
-      try {
-        const response = await fetch('/api/change-password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            username: user,
-            currentPassword,
-            newPassword
-          })
-        });
-
-        const data = await response.json();
-
-        if (response.ok && data.success) {
-          messageBox.innerText = data.message || 'تم تغيير كلمة المرور بنجاح';
-          messageBox.style.color = 'green';
-          document.getElementById('currentPassword').value = '';
-          document.getElementById('newPassword').value = '';
-        } else {
-          messageBox.innerText = data.message || 'حدث خطأ أثناء تغيير كلمة المرور';
-          messageBox.style.color = 'red';
-        }
-      } catch (err) {
-        messageBox.innerText = 'تعذر الاتصال بالخادم';
-        messageBox.style.color = 'red';
-      }
-    }
-
-    function logout() {
-      sessionStorage.removeItem('loggedInUser');
-      window.location.href = 'index.html';
-    }
-  </script>
+  <footer class="footer">
+    <p>© 2026 ALS Media. جميع الحقوق محفوظة.</p>
+  </footer>
 </body>
 </html>
