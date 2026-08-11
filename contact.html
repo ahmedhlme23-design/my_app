@@ -31,32 +31,33 @@
       <h1>تواصل معنا</h1>
       <p>للتعاون أو الرعاية أو الاستفسارات التجارية، املأ النموذج التالي وسنرد عليك في أقرب وقت.</p>
       <div class="form-card">
-        <form>
+        <form id="contactForm">
           <div class="form-grid">
             <div class="form-group">
               <label>الاسم</label>
-              <input type="text" placeholder="أدخل اسمك" />
+              <input id="name" type="text" placeholder="أدخل اسمك" required />
             </div>
             <div class="form-group">
               <label>البريد الإلكتروني</label>
-              <input type="email" placeholder="name@example.com" />
+              <input id="email" type="email" placeholder="name@example.com" required />
             </div>
             <div class="form-group full">
               <label>نوع الاستفسار</label>
-              <select>
-                <option>رعاية قناة يوتيوب</option>
-                <option>حملة تطبيق أو موقع</option>
-                <option>شراكة إستراتيجية</option>
+              <select id="subject">
+                <option value="رعاية قناة يوتيوب">رعاية قناة يوتيوب</option>
+                <option value="حملة تطبيق أو موقع">حملة تطبيق أو موقع</option>
+                <option value="شراكة إستراتيجية">شراكة إستراتيجية</option>
               </select>
             </div>
             <div class="form-group full">
               <label>الرسالة</label>
-              <textarea rows="5" placeholder="أخبرنا عن احتياجك..."></textarea>
+              <textarea id="message" rows="5" placeholder="أخبرنا عن احتياجك..." required></textarea>
             </div>
           </div>
           <div class="form-actions">
-            <button class="btn btn-primary" type="button">إرسال</button>
+            <button class="btn btn-primary" type="submit">إرسال</button>
           </div>
+          <p id="contactMessage" class="status-message"></p>
         </form>
       </div>
     </section>

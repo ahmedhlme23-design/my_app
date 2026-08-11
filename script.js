@@ -51,3 +51,46 @@ if (document.getElementById('portfolioGrid')) {
   document.getElementById('searchInput')?.addEventListener('input', filterPortfolio);
   document.getElementById('sortSelect')?.addEventListener('change', filterPortfolio);
 }
+
+if (document.getElementById('contactForm')) {
+  document.getElementById('contactForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const messageBox = document.getElementById('contactMessage');
+    const submitButton = form.querySelector('button[type="submit"]');
+
+    messageBox.textContent = 'جاري إرسال الرسالة...';
+    messageBox.style.color = '#c7d2fe';
+    submitButton.disabled = true;
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: document.getElementById('name').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          subject: document.getElementById('subject').value,
+          message: document.getElementById('message').value.trim()
+        })
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok && data.success) {
+        messageBox.textContent = data.message || 'تم إرسال الرسالة بنجاح';
+        messageBox.style.color = '#10b981';
+        form.reset();
+      } else {
+        messageBox.textContent = data.message || 'تعذر إرسال الرسالة';
+        messageBox.style.color = '#ef4444';
+      }
+    } catch (err) {
+      messageBox.textContent = 'تعذر الاتصال بالخادم';
+      messageBox.style.color = '#ef4444';
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+}
