@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مولد الأسئلة</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-card">
+    <h1>مولد الأسئلة</h1>
+    <p>أنشئ أسئلة مخصصة ثم تولد ملف PDF جاهز للطباعة.</p>
+
+    <button onclick="window.location.href='home.html'">العودة للصفحة الرئيسية</button>
+
+    <div class="pdf-generator-section">
+      <h3>إعدادات السؤال</h3>
+      <label>اسم الاختبار</label>
+      <input type="text" id="examTitle" placeholder="أدخل اسم الاختبار" />
+
+      <label>عدد الأسئلة</label>
+      <input type="number" id="questionCount" min="1" value="10" />
+
+      <label>النص العام أو الأسئلة</label>
+      <textarea id="examContent" rows="10" placeholder="أدخل الأسئلة أو النص هنا..."></textarea>
+
+      <button onclick="generatePdf()">توليد PDF</button>
+      <p id="pdfMessage" class="message"></p>
+
+      <div id="pdfPreview" class="pdf-preview"></div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    function generatePdf() {
+      const title = document.getElementById('examTitle').value.trim() || 'اختبار';
+      const count = parseInt(document.getElementById('questionCount').value, 10) || 10;
+      const content = document.getElementById('examContent').value.trim();
+      const messageBox = document.getElementById('pdfMessage');
+      const preview = document.getElementById('pdfPreview');
+
+      if (!content) {
+        messageBox.innerText = 'يرجى إدخال النص أو الأسئلة أولاً';
+        messageBox.style.color = 'red';
+        return;
+      }
+
+      const lines = content.split(/\n+/).filter(line => line.trim());
+      const previewLines = lines.slice(0, count).map((line, index) => `<div class="preview-item">${index + 1}. ${line}</div>`).join('');
+      preview.innerHTML = `
+        <h4>${title}</h4>
+        <p>عدد الأسئلة: ${count}</p>
+        ${previewLines}
+      `;
+
+      messageBox.innerText = 'جاري توليد الملف...';
+      messageBox.style.color = '#333';
+
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `${title}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(preview).save().then(() => {
+        messageBox.innerText = 'تم توليد الملف بنجاح';
+        messageBox.style.color = 'green';
+      }).catch(() => {
+        messageBox.innerText = 'تعذر توليد الملف';
+        messageBox.style.color = 'red';
+      });
+    }
+  </script>
+</body>
+</html>

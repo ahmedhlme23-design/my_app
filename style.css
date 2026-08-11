@@ -81,7 +81,8 @@ button:hover {
   background-color: #5a6268;
 }
 
-.welcome-card {
+.welcome-card,
+.page-card {
   background: #ffffff;
   padding: 30px;
   border-radius: 12px;
@@ -89,6 +90,10 @@ button:hover {
   width: 100%;
   max-width: 420px;
   text-align: center;
+}
+
+.page-card {
+  max-width: 700px;
 }
 
 .welcome-card h1 {
