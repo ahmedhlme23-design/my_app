@@ -23,6 +23,17 @@ export default async function handler(req, res) {
     const sql = neon(connectionString);
 
     await sql`
+      CREATE TABLE IF NOT EXISTS contacts (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        subject VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+
+    await sql`
       INSERT INTO contacts (name, email, subject, message)
       VALUES (${name}, ${email}, ${subject}, ${message})
     `;
